@@ -1,10 +1,7 @@
 package com.zouxxyy.blog.core.controller.admin;
 
 import com.zouxxyy.blog.core.entity.User;
-import com.zouxxyy.blog.core.service.ArticleService;
-import com.zouxxyy.blog.core.service.CategoryService;
-import com.zouxxyy.blog.core.service.TagService;
-import com.zouxxyy.blog.core.service.UserService;
+import com.zouxxyy.blog.core.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +29,9 @@ public class AdminController {
 
     @Resource
     private ArticleService articleService;
+
+    @Resource
+    private CommentService commentService;
 
     // 登陆界面
     @RequestMapping({"/login"})
@@ -71,12 +71,11 @@ public class AdminController {
 //        request.setAttribute("blogCount", blogService.getTotalBlogs());
 //        request.setAttribute("linkCount", linkService.getTotalLinks());
 //        request.setAttribute("tagCount", tagService.getTotalTags());
-//        request.setAttribute("commentCount", commentService.getTotalComments());
+//        request.setAttribute("commentCount", CommentService.getTotalComments());
         request.setAttribute("categoryCount", categoryService.getCategoryCount());
         request.setAttribute("articleCount", articleService.getArticleCount());
-        request.setAttribute("linkCount", 1);
         request.setAttribute("tagCount", tagService.getTagCount());
-        request.setAttribute("commentCount", 1);
+        request.setAttribute("commentCount", commentService.getCommentCount());
 
         return "admin/index";
 

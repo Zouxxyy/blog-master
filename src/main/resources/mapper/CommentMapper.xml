@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zouxxyy.blog.core.dao.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.zouxxyy.blog.core.entity.Comment" >
+    <id column="comment_id" property="commentId" jdbcType="BIGINT" />
+    <result column="comment_pid" property="commentPid" jdbcType="BIGINT" />
+    <result column="comment_article_id" property="commentArticleId" jdbcType="BIGINT" />
+    <result column="comment_author_name" property="commentAuthorName" jdbcType="VARCHAR" />
+    <result column="comment_author_email" property="commentAuthorEmail" jdbcType="VARCHAR" />
+    <result column="comment_author_ip" property="commentAuthorIp" jdbcType="VARCHAR" />
+    <result column="comment_content" property="commentContent" jdbcType="VARCHAR" />
+    <result column="comment_create_time" property="commentCreateTime" jdbcType="TIMESTAMP" />
+    <result column="comment_status" property="commentStatus" jdbcType="TINYINT" />
+    <result column="comment_like_count" property="commentLikeCount" jdbcType="INTEGER" />
+  </resultMap>
+
+  <!--添加回复内容的map-->
+  <resultMap id="BaseResultMapPlus" type="com.zouxxyy.blog.core.entity.Comment" extends="BaseResultMap">
+    <association property="commentArticleTitle" column="comment_article_id" select="com.zouxxyy.blog.core.dao.ArticleMapper.getArticleTitleByAid"/>
+    <association property="commentReplyContent" column="comment_id" select="com.zouxxyy.blog.core.dao.CommentMapper.getCommentReplyByCommentId"/>
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+    comment_id, comment_pid, comment_article_id, comment_author_name, comment_author_email, 
+    comment_author_ip, comment_content, comment_create_time, comment_status, comment_like_count
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zouxxyy.blog.core.entity.Comment" >
+    insert into comment (comment_id, comment_pid, comment_article_id, 
+      comment_author_name, comment_author_email, 
+      comment_author_ip, comment_content, comment_create_time, 
+      comment_status, comment_like_count)
+    values (#{commentId,jdbcType=BIGINT}, #{commentPid,jdbcType=BIGINT}, #{commentArticleId,jdbcType=BIGINT}, 
+      #{commentAuthorName,jdbcType=VARCHAR}, #{commentAuthorEmail,jdbcType=VARCHAR}, 
+      #{commentAuthorIp,jdbcType=VARCHAR}, #{commentContent,jdbcType=VARCHAR}, #{commentCreateTime,jdbcType=TIMESTAMP}, 
+      #{commentStatus,jdbcType=TINYINT}, #{commentLikeCount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zouxxyy.blog.core.entity.Comment" >
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        comment_id,
+      </if>
+      <if test="commentPid != null" >
+        comment_pid,
+      </if>
+      <if test="commentArticleId != null" >
+        comment_article_id,
+      </if>
+      <if test="commentAuthorName != null" >
+        comment_author_name,
+      </if>
+      <if test="commentAuthorEmail != null" >
+        comment_author_email,
+      </if>
+      <if test="commentAuthorIp != null" >
+        comment_author_ip,
+      </if>
+      <if test="commentContent != null" >
+        comment_content,
+      </if>
+      <if test="commentCreateTime != null" >
+        comment_create_time,
+      </if>
+      <if test="commentStatus != null" >
+        comment_status,
+      </if>
+      <if test="commentLikeCount != null" >
+        comment_like_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="commentPid != null" >
+        #{commentPid,jdbcType=BIGINT},
+      </if>
+      <if test="commentArticleId != null" >
+        #{commentArticleId,jdbcType=BIGINT},
+      </if>
+      <if test="commentAuthorName != null" >
+        #{commentAuthorName,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorEmail != null" >
+        #{commentAuthorEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorIp != null" >
+        #{commentAuthorIp,jdbcType=VARCHAR},
+      </if>
+      <if test="commentContent != null" >
+        #{commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="commentCreateTime != null" >
+        #{commentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentStatus != null" >
+        #{commentStatus,jdbcType=TINYINT},
+      </if>
+      <if test="commentLikeCount != null" >
+        #{commentLikeCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zouxxyy.blog.core.entity.Comment" >
+    update comment
+    <set >
+      <if test="commentPid != null" >
+        comment_pid = #{commentPid,jdbcType=BIGINT},
+      </if>
+      <if test="commentArticleId != null" >
+        comment_article_id = #{commentArticleId,jdbcType=BIGINT},
+      </if>
+      <if test="commentAuthorName != null" >
+        comment_author_name = #{commentAuthorName,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorEmail != null" >
+        comment_author_email = #{commentAuthorEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="commentAuthorIp != null" >
+        comment_author_ip = #{commentAuthorIp,jdbcType=VARCHAR},
+      </if>
+      <if test="commentContent != null" >
+        comment_content = #{commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="commentCreateTime != null" >
+        comment_create_time = #{commentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentStatus != null" >
+        comment_status = #{commentStatus,jdbcType=TINYINT},
+      </if>
+      <if test="commentLikeCount != null" >
+        comment_like_count = #{commentLikeCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zouxxyy.blog.core.entity.Comment" >
+    update comment
+    set comment_pid = #{commentPid,jdbcType=BIGINT},
+      comment_article_id = #{commentArticleId,jdbcType=BIGINT},
+      comment_author_name = #{commentAuthorName,jdbcType=VARCHAR},
+      comment_author_email = #{commentAuthorEmail,jdbcType=VARCHAR},
+      comment_author_ip = #{commentAuthorIp,jdbcType=VARCHAR},
+      comment_content = #{commentContent,jdbcType=VARCHAR},
+      comment_create_time = #{commentCreateTime,jdbcType=TIMESTAMP},
+      comment_status = #{commentStatus,jdbcType=TINYINT},
+      comment_like_count = #{commentLikeCount,jdbcType=INTEGER}
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="getCommentCount" parameterType="Map" resultType="int">
+    select count(*)  from comment
+    where comment_status = 0 or comment_status = 1
+  </select>
+
+  <select id="getCommentByStartAndLimit" resultMap="BaseResultMapPlus">
+    select
+    <include refid="Base_Column_List"/>
+    from comment
+    where comment_status = 0 or comment_status = 1
+    <if test="start!=null and limit!=null">
+      limit #{start}, #{limit}
+    </if>
+  </select>
+
+  <select id="getCommentReplyByCommentId" resultType="string">
+    select comment_content  from comment
+    where comment_pid = #{commetId}
+  </select>
+
+  <update id="checkByIds">
+    update comment
+    set comment_status=1 where comment_id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+    and comment_status = 0
+  </update>
+
+  <select id="getCommentByCommentPid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from comment
+    where comment_pid = #{commentPid}
+  </select>
+
+  <!--删除评论，与该评论的回复 -->
+  <delete id="deleteByCommentId" parameterType="java.lang.Integer" >
+    delete from comment
+    where comment_id = #{commentId} or comment_pid = #{commentId}
+  </delete>
+
+</mapper>

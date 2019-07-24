@@ -26,4 +26,6 @@ public interface ArticleMapper {
     List<Article> getArticleByStartAndLimit(Integer start, Integer limit);
 
     int getArticleCountByCid(Integer categoryId);
+
+    String getArticleTitleByAid(Integer articleId);
 }

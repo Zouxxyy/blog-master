@@ -240,4 +240,9 @@
     where article_category_id = #{categoryId}
   </select>
 
+  <select id="getArticleTitleByAid" resultType="string">
+    select article_title  from article
+    where article_id = #{articleId}
+  </select>
+
 </mapper>
