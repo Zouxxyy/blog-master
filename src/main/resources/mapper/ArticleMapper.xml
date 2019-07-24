@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zouxxyy.blog.core.dao.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.zouxxyy.blog.core.entity.Article" >
+    <id column="article_id" property="articleId" jdbcType="INTEGER" />
+    <result column="article_user_id" property="articleUserId" jdbcType="INTEGER" />
+    <result column="article_category_id" property="articleCategoryId" jdbcType="INTEGER" />
+    <result column="article_title" property="articleTitle" jdbcType="VARCHAR" />
+    <result column="article_view_count" property="articleViewCount" jdbcType="INTEGER" />
+    <result column="article_comment_count" property="articleCommentCount" jdbcType="INTEGER" />
+    <result column="article_like_count" property="articleLikeCount" jdbcType="INTEGER" />
+    <result column="article_status" property="articleStatus" jdbcType="TINYINT" />
+    <result column="article_enable_comment" property="articleEnableComment" jdbcType="TINYINT" />
+    <result column="article_update_time" property="articleUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="article_create_time" property="articleCreateTime" jdbcType="TIMESTAMP" />
+
+    <association property="articleCategory" column="article_category_id" select="com.zouxxyy.blog.core.dao.CategoryMapper.selectByPrimaryKey"/>
+    <association property="tagList" column="article_id" select="com.zouxxyy.blog.core.dao.TagMapper.getTagByAid"/>
+  </resultMap>
+
+  <resultMap id="ResultMapWithBLOBs" type="com.zouxxyy.blog.core.entity.Article" extends="BaseResultMap" >
+    <result column="article_content" property="articleContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+<!--  <resultMap id="BaseResultMapPlus" type="com.zouxxyy.blog.core.entity.Article" extends="BaseResultMap" >-->
+<!--    <result column="category_name" property="categoryName" jdbcType="LONGVARCHAR" />-->
+<!--  </resultMap>-->
+
+
+  <sql id="Base_Column_List" >
+    article_id, article_user_id, article_category_id, article_title, article_view_count, 
+    article_comment_count, article_like_count, article_status, article_enable_comment, 
+    article_update_time, article_create_time
+  </sql>
+
+<!--  <sql id="Base_Column_List_Plus" >-->
+<!--    article_id, article_user_id, article_category_id, article_title, article_view_count,-->
+<!--    article_comment_count, article_like_count, article_status, article_enable_comment,-->
+<!--    article_update_time, article_create_time, category_name-->
+<!--  </sql>-->
+
+  <sql id="Blob_Column_List" >
+    article_content
+  </sql>
+
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from article
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zouxxyy.blog.core.entity.Article" >
+    insert into article (article_id, article_user_id, article_category_id, 
+      article_title, article_view_count, article_comment_count, 
+      article_like_count, article_status, article_enable_comment, 
+      article_update_time, article_create_time, 
+      article_content)
+    values (#{articleId,jdbcType=INTEGER}, #{articleUserId,jdbcType=INTEGER}, #{articleCategoryId,jdbcType=INTEGER}, 
+      #{articleTitle,jdbcType=VARCHAR}, #{articleViewCount,jdbcType=INTEGER}, #{articleCommentCount,jdbcType=INTEGER}, 
+      #{articleLikeCount,jdbcType=INTEGER}, #{articleStatus,jdbcType=TINYINT}, #{articleEnableComment,jdbcType=TINYINT}, 
+      #{articleUpdateTime,jdbcType=TIMESTAMP}, #{articleCreateTime,jdbcType=TIMESTAMP}, 
+      #{articleContent,jdbcType=LONGVARCHAR})
+  </insert>
+
+  <!--注意了 useGeneratedKeys="true" keyProperty="articleId"-->
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="articleId"
+          parameterType="com.zouxxyy.blog.core.entity.Article" >
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="articleId != null" >
+        article_id,
+      </if>
+      <if test="articleUserId != null" >
+        article_user_id,
+      </if>
+      <if test="articleCategoryId != null" >
+        article_category_id,
+      </if>
+      <if test="articleTitle != null" >
+        article_title,
+      </if>
+      <if test="articleViewCount != null" >
+        article_view_count,
+      </if>
+      <if test="articleCommentCount != null" >
+        article_comment_count,
+      </if>
+      <if test="articleLikeCount != null" >
+        article_like_count,
+      </if>
+      <if test="articleStatus != null" >
+        article_status,
+      </if>
+      <if test="articleEnableComment != null" >
+        article_enable_comment,
+      </if>
+      <if test="articleUpdateTime != null" >
+        article_update_time,
+      </if>
+      <if test="articleCreateTime != null" >
+        article_create_time,
+      </if>
+      <if test="articleContent != null" >
+        article_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="articleId != null" >
+        #{articleId,jdbcType=INTEGER},
+      </if>
+      <if test="articleUserId != null" >
+        #{articleUserId,jdbcType=INTEGER},
+      </if>
+      <if test="articleCategoryId != null" >
+        #{articleCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="articleTitle != null" >
+        #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleViewCount != null" >
+        #{articleViewCount,jdbcType=INTEGER},
+      </if>
+      <if test="articleCommentCount != null" >
+        #{articleCommentCount,jdbcType=INTEGER},
+      </if>
+      <if test="articleLikeCount != null" >
+        #{articleLikeCount,jdbcType=INTEGER},
+      </if>
+      <if test="articleStatus != null" >
+        #{articleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="articleEnableComment != null" >
+        #{articleEnableComment,jdbcType=TINYINT},
+      </if>
+      <if test="articleUpdateTime != null" >
+        #{articleUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleCreateTime != null" >
+        #{articleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleContent != null" >
+        #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zouxxyy.blog.core.entity.Article" >
+    update article
+    <set >
+      <if test="articleUserId != null" >
+        article_user_id = #{articleUserId,jdbcType=INTEGER},
+      </if>
+      <if test="articleCategoryId != null" >
+        article_category_id = #{articleCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="articleTitle != null" >
+        article_title = #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleViewCount != null" >
+        article_view_count = #{articleViewCount,jdbcType=INTEGER},
+      </if>
+      <if test="articleCommentCount != null" >
+        article_comment_count = #{articleCommentCount,jdbcType=INTEGER},
+      </if>
+      <if test="articleLikeCount != null" >
+        article_like_count = #{articleLikeCount,jdbcType=INTEGER},
+      </if>
+      <if test="articleStatus != null" >
+        article_status = #{articleStatus,jdbcType=TINYINT},
+      </if>
+      <if test="articleEnableComment != null" >
+        article_enable_comment = #{articleEnableComment,jdbcType=TINYINT},
+      </if>
+      <if test="articleUpdateTime != null" >
+        article_update_time = #{articleUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleCreateTime != null" >
+        article_create_time = #{articleCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleContent != null" >
+        article_content = #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zouxxyy.blog.core.entity.Article" >
+    update article
+    set article_user_id = #{articleUserId,jdbcType=INTEGER},
+      article_category_id = #{articleCategoryId,jdbcType=INTEGER},
+      article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_view_count = #{articleViewCount,jdbcType=INTEGER},
+      article_comment_count = #{articleCommentCount,jdbcType=INTEGER},
+      article_like_count = #{articleLikeCount,jdbcType=INTEGER},
+      article_status = #{articleStatus,jdbcType=TINYINT},
+      article_enable_comment = #{articleEnableComment,jdbcType=TINYINT},
+      article_update_time = #{articleUpdateTime,jdbcType=TIMESTAMP},
+      article_create_time = #{articleCreateTime,jdbcType=TIMESTAMP},
+      article_content = #{articleContent,jdbcType=LONGVARCHAR}
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zouxxyy.blog.core.entity.Article" >
+    update article
+    set article_user_id = #{articleUserId,jdbcType=INTEGER},
+      article_category_id = #{articleCategoryId,jdbcType=INTEGER},
+      article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_view_count = #{articleViewCount,jdbcType=INTEGER},
+      article_comment_count = #{articleCommentCount,jdbcType=INTEGER},
+      article_like_count = #{articleLikeCount,jdbcType=INTEGER},
+      article_status = #{articleStatus,jdbcType=TINYINT},
+      article_enable_comment = #{articleEnableComment,jdbcType=TINYINT},
+      article_update_time = #{articleUpdateTime,jdbcType=TIMESTAMP},
+      article_create_time = #{articleCreateTime,jdbcType=TIMESTAMP}
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </update>
+
+  <!--以上是逆向工程生成的-->
+
+  <select id="getArticleCount" parameterType="Map" resultType="int">
+    select count(*)  from article
+  </select>
+
+  <select id="getArticleByStartAndLimit" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from article
+    <if test="start!=null and limit!=null">
+      limit #{start}, #{limit}
+    </if>
+
+  </select>
+
+  <select id="getArticleCountByCid" resultType="int">
+    select count(*)  from article
+    where article_category_id = #{categoryId}
+  </select>
+
+</mapper>

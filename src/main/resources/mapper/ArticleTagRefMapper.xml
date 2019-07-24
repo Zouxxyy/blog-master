@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zouxxyy.blog.core.dao.ArticleTagRefMapper">
+  <resultMap id="BaseResultMap" type="com.zouxxyy.blog.core.entity.ArticleTagRef">
+    <id column="article_id" jdbcType="INTEGER" property="articleId" />
+    <id column="tag_id" jdbcType="INTEGER" property="tagId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.zouxxyy.blog.core.entity.ArticleTagRef">
+    delete from article_tag_ref
+    where article_id = #{articleId,jdbcType=INTEGER}
+      and tag_id = #{tagId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zouxxyy.blog.core.entity.ArticleTagRef">
+    insert into article_tag_ref (article_id, tag_id)
+    values (#{articleId,jdbcType=INTEGER}, #{tagId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zouxxyy.blog.core.entity.ArticleTagRef">
+    insert into article_tag_ref
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        article_id,
+      </if>
+      <if test="tagId != null">
+        tag_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        #{articleId,jdbcType=INTEGER},
+      </if>
+      <if test="tagId != null">
+        #{tagId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+
+
+  <delete id="deleteByArticleID">
+    delete from article_tag_ref
+    where article_id = #{articleId,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByTagIds">
+    delete from article_tag_ref
+    where tag_id in
+    <foreach item="tagId" collection="array" open="(" separator="," close=")">
+      #{tagId}
+    </foreach>
+  </delete>
+
+  <select id="getArticleCountByTid" resultType="int">
+    select count(*)  from article_tag_ref
+    where tag_id = #{tagId}
+  </select>
+
+</mapper>

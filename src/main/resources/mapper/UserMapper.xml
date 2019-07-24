@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zouxxyy.blog.core.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.zouxxyy.blog.core.entity.User" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_pass" property="userPass" jdbcType="VARCHAR" />
+    <result column="user_nickname" property="userNickname" jdbcType="VARCHAR" />
+    <result column="user_signature" property="userSignature" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_avatar" property="userAvatar" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.zouxxyy.blog.core.entity.User" extends="BaseResultMap" >
+    <result column="user_profile" property="userProfile" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_name, user_pass, user_nickname, user_signature, user_email, user_avatar
+  </sql>
+  <sql id="Blob_Column_List" >
+    user_profile
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zouxxyy.blog.core.entity.User" >
+    insert into user (user_id, user_name, user_pass,
+                       user_nickname, user_signature, user_email,
+                       user_avatar, user_profile)
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR},
+            #{userNickname,jdbcType=VARCHAR}, #{userSignature,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR},
+            #{userAvatar,jdbcType=VARCHAR}, #{userProfile,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zouxxyy.blog.core.entity.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userPass != null" >
+        user_pass,
+      </if>
+      <if test="userNickname != null" >
+        user_nickname,
+      </if>
+      <if test="userSignature != null" >
+        user_signature,
+      </if>
+      <if test="userEmail != null" >
+        user_email,
+      </if>
+      <if test="userAvatar != null" >
+        user_avatar,
+      </if>
+      <if test="userProfile != null" >
+        user_profile,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPass != null" >
+        #{userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null" >
+        #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userSignature != null" >
+        #{userSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userAvatar != null" >
+        #{userAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="userProfile != null" >
+        #{userProfile,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zouxxyy.blog.core.entity.User" >
+    update user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPass != null" >
+        user_pass = #{userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null" >
+        user_nickname = #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userSignature != null" >
+        user_signature = #{userSignature,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userAvatar != null" >
+        user_avatar = #{userAvatar,jdbcType=VARCHAR},
+      </if>
+      <if test="userProfile != null" >
+        user_profile = #{userProfile,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zouxxyy.blog.core.entity.User" >
+    update user
+    set user_name = #{userName,jdbcType=VARCHAR},
+        user_pass = #{userPass,jdbcType=VARCHAR},
+        user_nickname = #{userNickname,jdbcType=VARCHAR},
+        user_signature = #{userSignature,jdbcType=VARCHAR},
+        user_email = #{userEmail,jdbcType=VARCHAR},
+        user_avatar = #{userAvatar,jdbcType=VARCHAR},
+        user_profile = #{userProfile,jdbcType=LONGVARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zouxxyy.blog.core.entity.User" >
+    update user
+    set user_name = #{userName,jdbcType=VARCHAR},
+        user_pass = #{userPass,jdbcType=VARCHAR},
+        user_nickname = #{userNickname,jdbcType=VARCHAR},
+        user_signature = #{userSignature,jdbcType=VARCHAR},
+        user_email = #{userEmail,jdbcType=VARCHAR},
+        user_avatar = #{userAvatar,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="login" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from user
+    where user_name = #{userName,jdbcType=VARCHAR} AND user_pass=#{password,jdbcType=VARCHAR}
+  </select>
+
+</mapper>
