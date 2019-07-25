@@ -91,6 +91,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a th:href="@{/admin/log}"
+                       th:class="${path}=='log'?'nav-link active':'nav-link'">
+                        <i class="fa fa-user-secret nav-icon"></i>
+                        <p>管理日志</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a th:href="@{/admin/logout}" class="nav-link">
                         <i class="fa fa-sign-out nav-icon"></i>
                         <p>安全退出</p>

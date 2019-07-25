@@ -54,9 +54,6 @@ $(function () {
 
 });
 
-function imgFormatter(cellvalue) {
-    return "<a href='" + cellvalue + "'> <img src='" + cellvalue + "' height=\"64\" width=\"64\" alt='icon'/></a>";
-}
 
 /**
  * jqGrid重新加载

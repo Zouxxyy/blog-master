@@ -4,10 +4,10 @@ $(function () {
         datatype: "json",
         colModel: [
             {label: 'id', name: 'commentId', index: 'commentId', width: 50, key: true, hidden: true},
-            {label: '评论文章', name: 'commentArticleTitle', index: 'commentArticleTitle', width: 90},
             {label: '原评论', name: 'commentPContent', index: 'commentPContent', width: 120},
             {label: '回复内容', name: 'commentContent', index: 'commentContent', width: 120},
-            {label: '评论时间', name: 'commentCreateTime', index: 'commentCreateTime', width: 60},
+            {label: '评论文章', name: 'commentArticleTitle', index: 'commentArticleTitle', width: 90},
+            {label: '回复时间', name: 'commentCreateTime', index: 'commentCreateTime', width: 60},
 
         ],
         height: 700,
@@ -39,15 +39,6 @@ $(function () {
     $(window).resize(function () {
         $("#jqGrid").setGridWidth($(".card-body").width());
     });
-    function statusFormatter(cellvalue) {
-        if (cellvalue == 0) {
-            return "<button type=\"button\" class=\"btn btn-block btn-secondary btn-sm\" style=\"width: 50%;\">待审核</button>";
-        }
-        else if (cellvalue == 1) {
-            return "<button type=\"button\" class=\"btn btn-block btn-success btn-sm\" style=\"width: 50%;\">已审核</button>";
-        }
-    }
-
 });
 
 /**
