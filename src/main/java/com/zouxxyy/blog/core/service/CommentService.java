@@ -39,4 +39,20 @@ public interface CommentService {
      * @return
      */
     Boolean deleteBatch(Integer[] ids);
+
+    /**
+     * 获取回复列表
+     * @param page
+     * @param limit
+     * @return
+     */
+    PageResult getReplyPage(Integer page, Integer limit);
+
+    /**
+     * 跟新回复
+     * @param commentId
+     * @param replyBody
+     * @return
+     */
+    Boolean updateReply(Long commentId, String replyBody);
 }

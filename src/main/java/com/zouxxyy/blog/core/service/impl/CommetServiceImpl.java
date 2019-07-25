@@ -36,23 +36,14 @@ public class CommetServiceImpl implements CommentService {
 
     @Override
     public Boolean reply(Long commentId, String replyBody) {
-        Comment replyComment = commentMapper.getCommentByCommentPid(commentId);
-        if(replyComment == null) {
-            // 为空就创建新回复
-            Comment newReplyComment = new Comment();
-            newReplyComment.setCommentContent(replyBody);
-            newReplyComment.setCommentCreateTime(new Date());
-            newReplyComment.setCommentPid(commentId);
-            newReplyComment.setCommentStatus((byte)2);
-            return commentMapper.insertSelective(newReplyComment) > 0;
-
-        }
-        else {
-            // 不为空，修改即可
-            replyComment.setCommentContent(replyBody);
-            replyComment.setCommentCreateTime(new Date());
-            return commentMapper.updateByPrimaryKeySelective(replyComment) > 0;
-        }
+        Comment comment = commentMapper.selectByPrimaryKey(commentId);
+        Comment newReplyComment = new Comment();
+        newReplyComment.setCommentContent(replyBody);
+        newReplyComment.setCommentCreateTime(new Date());
+        newReplyComment.setCommentPid(commentId);
+        newReplyComment.setCommentStatus((byte)2);
+        newReplyComment.setCommentArticleId(comment.getCommentArticleId());
+        return commentMapper.insertSelective(newReplyComment) > 0;
     }
 
     @Override
@@ -61,5 +52,21 @@ public class CommetServiceImpl implements CommentService {
             commentMapper.deleteByCommentId(id);
         }
         return true;
+    }
+
+    @Override
+    public PageResult getReplyPage(Integer page, Integer limit) {
+        List<Comment> commentList = commentMapper.getReplyByStartAndLimit((page - 1) * limit, limit);
+        int count = commentMapper.getReplyCount(); // 获取总数
+        PageResult pageResult = new PageResult(commentList, count, limit, page);
+        return pageResult;
+    }
+
+    @Override
+    public Boolean updateReply(Long commentId, String replyBody) {
+        Comment comment = commentMapper.selectByPrimaryKey(commentId);
+        comment.setCommentContent(replyBody);
+        comment.setCommentCreateTime(new Date());
+        return commentMapper.updateByPrimaryKeySelective(comment) > 0;
     }
 }

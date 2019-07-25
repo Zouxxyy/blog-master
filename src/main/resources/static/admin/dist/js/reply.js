@@ -1,15 +1,14 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/comments/list',
+        url: '/admin/replies/list',
         datatype: "json",
         colModel: [
             {label: 'id', name: 'commentId', index: 'commentId', width: 50, key: true, hidden: true},
-            {label: '评论人', name: 'commentAuthorName', index: 'commentAuthorName', width: 40},
-            {label: '评论内容', name: 'commentContent', index: 'commentContent', width: 120},
             {label: '评论文章', name: 'commentArticleTitle', index: 'commentArticleTitle', width: 90},
+            {label: '原评论', name: 'commentPContent', index: 'commentPContent', width: 120},
+            {label: '回复内容', name: 'commentContent', index: 'commentContent', width: 120},
             {label: '评论时间', name: 'commentCreateTime', index: 'commentCreateTime', width: 60},
-            {label: '状态', name: 'commentStatus', index: 'commentStatus', width: 30, formatter: statusFormatter},
-            // {label: '评论人邮箱', name: 'commentAuthorEmail', index: 'commentAuthorEmail', width: 90},
+
         ],
         height: 700,
         rowNum: 10,
@@ -61,44 +60,6 @@ function reload() {
     }).trigger("reloadGrid");
 }
 
-/**
- * 批量审核
- */
-function checkDoneComments() {
-    var ids = getSelectedRows();
-    if (ids == null) {
-        return;
-    }
-    swal({
-        title: "确认弹框",
-        text: "确认审核通过吗?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    }).then((flag) => {
-            if (flag) {
-                $.ajax({
-                    type: "POST",
-                    url: "/admin/comments/checkDone",
-                    contentType: "application/json",
-                    data: JSON.stringify(ids),
-                    success: function (r) {
-                        if (r.resultCode == 200) {
-                            swal("审核成功", {
-                                icon: "success",
-                            });
-                            $("#jqGrid").trigger("reloadGrid");
-                        } else {
-                            swal(r.message, {
-                                icon: "error",
-                            });
-                        }
-                    }
-                });
-            }
-        }
-    );
-}
 
 /**
  * 批量删除
@@ -110,7 +71,7 @@ function deleteComments() {
     }
     swal({
         title: "确认弹框",
-        text: "确认删除这些评论吗?",
+        text: "确认删除这些回复吗?",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -139,7 +100,7 @@ function deleteComments() {
     );
 }
 
-
+// 修改
 function reply() {
     var id = getSelectedRow();
     if (id == null) {
@@ -147,12 +108,6 @@ function reply() {
     }
     var rowData = $("#jqGrid").jqGrid('getRowData', id);
     console.log(rowData);
-    if (rowData.commentStatus.indexOf('待审核') > -1) {
-        swal("请先审核该评论再进行回复!", {
-            icon: "warning",
-        });
-        return;
-    }
     $("#replyBody").val('');
     $('#replyModal').modal('show');
 }
@@ -166,7 +121,7 @@ $('#saveButton').click(function () {
         });
         return;
     } else {
-        var url = '/admin/comments/reply';
+        var url = '/admin/replies/update';
         var id = getSelectedRow();
         var params = {"commentId": id, "replyBody": replyBody}
         $.ajax({
@@ -176,7 +131,7 @@ $('#saveButton').click(function () {
             success: function (result) {
                 if (result.resultCode == 200) {
                     $('#replyModal').modal('hide');
-                    swal("回复成功", {
+                    swal("修改回复成功", {
                         icon: "success",
                     });
                     reload();

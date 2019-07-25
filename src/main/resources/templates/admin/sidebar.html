@@ -9,52 +9,36 @@
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
-<!--        <div class="user-panel mt-3 pb-3 mb-3 d-flex">-->
-<!--            <div class="image">-->
-<!--                <img th:src="@{/admin/dist/img/zxy-me.png}" class="img-circle elevation-2" alt="User Image">-->
-<!--            </div>-->
-<!--            <div class="info">-->
-<!--                <a href="#" class="d-block" th:text="${session.loginUser}"></a>-->
-<!--            </div>-->
-<!--        </div>-->
+
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-                <li class="nav-header">Dashboard</li>
+<!--                <li class="nav-header">Dashboard</li>-->
                 <li class="nav-item">
                     <a th:href="@{/admin/index}" th:class="${path}=='index'?'nav-link active':'nav-link'">
                         <i class="nav-icon fa fa-dashboard"></i>
                         <p>
-                            Dashboard
+                            主页
                         </p>
                     </a>
                 </li>
+                <li class="nav-header">博客</li>
                 <li class="nav-item">
                     <a th:href="@{/admin/articles/edit}" th:class="${path}=='edit'?'nav-link active':'nav-link'">
                         <i class="nav-icon fa fa fa-pencil-square-o"></i>
                         <p>
-                            发布博客
+                            写博客
                         </p>
                     </a>
                 </li>
-                <li class="nav-header">管理模块</li>
                 <li class="nav-item">
                     <a th:href="@{/admin/articles}" th:class="${path}=='articles'?'nav-link active':'nav-link'">
                         <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
                         <p>
-                            博客管理
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a th:href="@{/admin/comments}" th:class="${path}=='comments'?'nav-link active':'nav-link'">
-                        <i class="fa fa-comments nav-icon" aria-hidden="true"></i>
-                        <p>
-                            评论管理
+                            博客
                         </p>
                     </a>
                 </li>
@@ -62,7 +46,7 @@
                     <a th:href="@{/admin/categories}" th:class="${path}=='categories'?'nav-link active':'nav-link'">
                         <i class="fa fa-bookmark nav-icon" aria-hidden="true"></i>
                         <p>
-                            分类管理
+                            分类
                         </p>
                     </a>
                 </li>
@@ -70,11 +54,28 @@
                     <a th:href="@{/admin/tags}" th:class="${path}=='tags'?'nav-link active':'nav-link'">
                         <i class="fa fa-tags nav-icon" aria-hidden="true"></i>
                         <p>
-                            标签管理
+                            标签
                         </p>
                     </a>
                 </li>
-                <li class="nav-header">系统管理</li>
+                <li class="nav-header">评论</li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/comments}" th:class="${path}=='comments'?'nav-link active':'nav-link'">
+                        <i class="fa fa-comments nav-icon" aria-hidden="true"></i>
+                        <p>
+                            评论
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin/replies}" th:class="${path}=='replies'?'nav-link active':'nav-link'">
+                        <i class="fa fa-user nav-icon" aria-hidden="true"></i>
+                        <p>
+                            回复
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-header">用户</li>
                 <li class="nav-item">
                     <a th:href="@{/admin/configurations}"
                        th:class="${path}=='configurations'?'nav-link active':'nav-link'">

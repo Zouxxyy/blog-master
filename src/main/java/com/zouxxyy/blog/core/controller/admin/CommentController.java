@@ -56,15 +56,15 @@ public class CommentController {
 
     @PostMapping("/comments/reply")
     @ResponseBody
-    public Result checkDone(@RequestParam("commentId") Long commentId,
-                            @RequestParam("replyBody") String replyBody) {
+    public Result reply(@RequestParam("commentId") Long commentId,
+                        @RequestParam("replyBody") String replyBody) {
         if (commentId == null || commentId < 1 || StringUtils.isEmpty(replyBody)) {
             return new Result<>(500, "参数异常！", null);
         }
         if (commentService.reply(commentId, replyBody)) {
             return new Result<>(200, "SUCCESS", null);
         } else {
-            return new Result<>(500, "删除失败！", null);
+            return new Result<>(500, "添加回复失败！", null);
         }
     }
 
@@ -81,4 +81,41 @@ public class CommentController {
         }
     }
 
+    // 回复管理页面
+    @GetMapping("/replies")
+    public String replyList(HttpServletRequest request) {
+        request.setAttribute("path", "replies");
+        return "admin/reply";
+    }
+
+    // 回复列表
+    @GetMapping("/replies/list")
+    @ResponseBody
+    public Result replyList(@RequestParam Map<String, Object> params) {
+
+        // 前端发送 page 当前页码， limit 每页个数
+        int page = Integer.parseInt(params.get("page").toString());
+        int limit = Integer.parseInt(params.get("limit").toString());
+
+        PageResult pageResult = commentService.getReplyPage(page, limit);
+
+        // 后台返回数据
+        return new Result<>(200, "SUCCESS", pageResult);
+    }
+
+
+    // 回复修改
+    @RequestMapping(value = "/replies/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Result replyUpdate(@RequestParam("commentId") Long commentId,
+                              @RequestParam("replyBody") String replyBody) {
+        if (commentId == null || commentId < 1 || StringUtils.isEmpty(replyBody)) {
+            return new Result<>(500, "参数异常！", null);
+        }
+        if (commentService.updateReply(commentId, replyBody)) {
+            return new Result<>(200, "SUCCESS", null);
+        } else {
+            return new Result<>(500, "回复修改失败！", null);
+        }
+    }
 }

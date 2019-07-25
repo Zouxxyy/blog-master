@@ -4,10 +4,7 @@ import com.zouxxyy.blog.core.entity.User;
 import com.zouxxyy.blog.core.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +47,8 @@ public class AdminController {
 
         User user = userService.login(userName, passWord);
         if(user != null) {
-            // 将昵称和id存入session域中
+
+            // 将昵称和id存入session域中，用于登陆拦截器
             session.setAttribute("loginUser", user.getUserNickname());
             session.setAttribute("loginUserId", user.getUserId());
             // 登陆成功，进入首页
@@ -67,11 +65,6 @@ public class AdminController {
     public String index(HttpServletRequest request) {
 
         request.setAttribute("path", "index");
-//        request.setAttribute("categoryCount", categoryService.getTotalCategories());
-//        request.setAttribute("blogCount", blogService.getTotalBlogs());
-//        request.setAttribute("linkCount", linkService.getTotalLinks());
-//        request.setAttribute("tagCount", tagService.getTotalTags());
-//        request.setAttribute("commentCount", CommentService.getTotalComments());
         request.setAttribute("categoryCount", categoryService.getCategoryCount());
         request.setAttribute("articleCount", articleService.getArticleCount());
         request.setAttribute("tagCount", tagService.getTagCount());
@@ -79,5 +72,52 @@ public class AdminController {
 
         return "admin/index";
 
+    }
+
+    // 进入修改密码页面
+    @GetMapping("/profile")
+    public String profile(HttpServletRequest request) {
+        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
+        User user = userService.getUserByUserId(loginUserId);
+        request.setAttribute("path", "profile");
+        request.setAttribute("userName", user.getUserName());
+        request.setAttribute("userNickName", user.getUserNickname());
+        return "admin/profile";
+    }
+
+    // 修改名称和昵称
+    @PostMapping("/profile/name")
+    @ResponseBody
+    public String nameUpdate(HttpServletRequest request, @RequestParam("userName") String userName,
+                             @RequestParam("userNickName") String userNickName) {
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(userNickName)) {
+            return "参数不能为空";
+        }
+        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
+        if (userService.updateName(loginUserId, userName, userNickName)) {
+            return "success";
+        } else {
+            return "修改失败";
+        }
+    }
+
+    // 修改密码
+    @PostMapping("/profile/password")
+    @ResponseBody
+    public String passwordUpdate(HttpServletRequest request, @RequestParam("originalPassword") String originalPassword,
+                                 @RequestParam("newPassword") String newPassword) {
+        if (StringUtils.isEmpty(originalPassword) || StringUtils.isEmpty(newPassword)) {
+            return "参数不能为空";
+        }
+        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
+        if (userService.updatePassword(loginUserId, originalPassword, newPassword)) {
+            //修改成功后清空session中的数据，前端控制跳转至登录页
+            request.getSession().removeAttribute("loginUserId");
+            request.getSession().removeAttribute("loginUser");
+            request.getSession().removeAttribute("errorMsg");
+            return "success";
+        } else {
+            return "密码错误";
+        }
     }
 }

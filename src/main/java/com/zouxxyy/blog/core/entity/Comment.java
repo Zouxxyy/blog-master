@@ -32,6 +32,8 @@ public class Comment {
 
     private String commentArticleTitle;
 
+    private String commentPContent; // 父内容
+
 
     public Long getCommentId() {
         return commentId;
@@ -127,5 +129,13 @@ public class Comment {
 
     public void setCommentArticleTitle(String commentArticleTitle) {
         this.commentArticleTitle = commentArticleTitle;
+    }
+
+    public String getCommentPContent() {
+        return commentPContent;
+    }
+
+    public void setCommentPContent(String commentPContent) {
+        this.commentPContent = commentPContent;
     }
 }

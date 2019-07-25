@@ -14,12 +14,19 @@
     <result column="comment_like_count" property="commentLikeCount" jdbcType="INTEGER" />
   </resultMap>
 
-  <!--添加回复内容的map-->
-  <resultMap id="BaseResultMapPlus" type="com.zouxxyy.blog.core.entity.Comment" extends="BaseResultMap">
+  <resultMap id="CommentResultMap" type="com.zouxxyy.blog.core.entity.Comment" extends="BaseResultMap">
     <association property="commentArticleTitle" column="comment_article_id" select="com.zouxxyy.blog.core.dao.ArticleMapper.getArticleTitleByAid"/>
-    <association property="commentReplyContent" column="comment_id" select="com.zouxxyy.blog.core.dao.CommentMapper.getCommentReplyByCommentId"/>
   </resultMap>
 
+  <resultMap id="ReplyResultMap" type="com.zouxxyy.blog.core.entity.Comment" >
+    <id column="comment_id" property="commentId" jdbcType="BIGINT" />
+    <result column="comment_pid" property="commentPid" jdbcType="BIGINT" />
+    <result column="comment_article_id" property="commentArticleId" jdbcType="BIGINT" />
+    <result column="comment_content" property="commentContent" jdbcType="VARCHAR" />
+    <result column="comment_create_time" property="commentCreateTime" jdbcType="TIMESTAMP" />
+    <association property="commentArticleTitle" column="comment_article_id" select="com.zouxxyy.blog.core.dao.ArticleMapper.getArticleTitleByAid"/>
+    <association property="commentPContent" column="comment_pid" select="com.zouxxyy.blog.core.dao.CommentMapper.getCommentContentByCommentId"/>
+  </resultMap>
 
   <sql id="Base_Column_List" >
     comment_id, comment_pid, comment_article_id, comment_author_name, comment_author_email, 
@@ -166,11 +173,26 @@
     where comment_status = 0 or comment_status = 1
   </select>
 
-  <select id="getCommentByStartAndLimit" resultMap="BaseResultMapPlus">
+  <select id="getReplyCount" parameterType="Map" resultType="int">
+    select count(*)  from comment
+    where comment_status = 2
+  </select>
+
+  <select id="getCommentByStartAndLimit" resultMap="CommentResultMap">
     select
     <include refid="Base_Column_List"/>
     from comment
     where comment_status = 0 or comment_status = 1
+    <if test="start!=null and limit!=null">
+      limit #{start}, #{limit}
+    </if>
+  </select>
+
+  <select id="getReplyByStartAndLimit" resultMap="ReplyResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from comment
+    where comment_status = 2
     <if test="start!=null and limit!=null">
       limit #{start}, #{limit}
     </if>
@@ -202,5 +224,10 @@
     delete from comment
     where comment_id = #{commentId} or comment_pid = #{commentId}
   </delete>
+
+  <select id="getCommentContentByCommentId" resultType="string">
+    select comment_content  from comment
+    where comment_id = #{commetId}
+  </select>
 
 </mapper>

@@ -20,4 +20,32 @@ public class UserServiceImpl implements UserService {
         String passwordMd5 = MD5Util.MD5Encode(password, "UTF-8");
         return userMapper.login(userName, passwordMd5);
     }
+
+    @Override
+    public User getUserByUserId(Integer userId) {
+        return userMapper.selectByPrimaryKey(userId);
+    }
+
+    @Override
+    public Boolean updateName(Integer loginUserId, String userName, String userNickName) {
+        User user = userMapper.selectByPrimaryKey(loginUserId);
+        user.setUserName(userName);
+        user.setUserNickname(userNickName);
+        return userMapper.updateByPrimaryKeySelective(user) > 0;
+    }
+
+    @Override
+    public Boolean updatePassword(Integer loginUserId, String originalPassword, String newPassword) {
+        User user = userMapper.selectByPrimaryKey(loginUserId);
+        // 将密码转成md5
+        String originalPasswordMd5 = MD5Util.MD5Encode(originalPassword, "UTF-8");
+        String newPasswordMd5 = MD5Util.MD5Encode(newPassword, "UTF-8");
+        if (user.getUserPass().equals(originalPasswordMd5)) {
+            user.setUserPass(newPasswordMd5);
+            return userMapper.updateByPrimaryKeySelective(user) > 0;
+        }
+        else {
+            return false;
+        }
+    }
 }
