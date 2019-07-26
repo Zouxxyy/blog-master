@@ -1,6 +1,7 @@
 package com.zouxxyy.blog.core.controller.admin;
 
 import com.zouxxyy.blog.core.service.CategoryService;
+import com.zouxxyy.blog.core.service.LogService;
 import com.zouxxyy.blog.core.util.PageResult;
 import com.zouxxyy.blog.core.util.Result;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -17,6 +19,9 @@ public class CategoryController {
 
     @Resource
     private CategoryService categoryService;
+
+    @Resource
+    private LogService logService;
 
     @GetMapping("/categories")
     public String categoryPage(HttpServletRequest request) {
@@ -51,6 +56,7 @@ public class CategoryController {
             return new Result<>(500, "请输入分类名称！", null);
         }
         if (categoryService.saveCategory(categoryName)) {
+            logService.addLog("添加分类", categoryName);
             return new Result<>(200, "SUCCESS", null);
         } else {
             return new Result<>(500, "分类名称重复", null);
@@ -68,6 +74,7 @@ public class CategoryController {
             return new Result<>(500, "请输入分类名称！", null);
         }
         if (categoryService.updateCategory(categoryId, categoryName)) {
+            logService.addLog("修改分类", categoryName);
             return new Result<>(200, "SUCCESS", null);
         } else {
             return new Result<>(500, "分类名称重复", null);
@@ -81,8 +88,11 @@ public class CategoryController {
     @ResponseBody
     public Result delete(@RequestBody Integer[] ids) {
 
+        // 这个应该放在删除之前。。。找这个bug不容易
+        List<String> logDetails = categoryService.getBatchNames(ids);
         String msg = categoryService.deleteBatch(ids);
         if (msg.equals("SUCCESS")) {
+            logService.addLog("删除分类", String.join("， ", logDetails));
             return new Result<>(200, "SUCCESS", null);
 
         } else {

@@ -2,6 +2,8 @@ package com.zouxxyy.blog.core.service;
 
 import com.zouxxyy.blog.core.util.PageResult;
 
+import java.util.List;
+
 public interface CommentService {
 
     /**
@@ -55,4 +57,11 @@ public interface CommentService {
      * @return
      */
     Boolean updateReply(Long commentId, String replyBody);
+
+    /**
+     * 根据id，获得评论内容，用于日志记录
+     * @param ids
+     * @return
+     */
+    List<String> getBatchContent(Integer[] ids);
 }

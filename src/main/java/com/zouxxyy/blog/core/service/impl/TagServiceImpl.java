@@ -68,5 +68,11 @@ public class TagServiceImpl implements TagService {
         //删除标签数据
         return tagMapper.deleteTagByIds(ids) > 0;
     }
+
+    @Override
+    public List<String> getBatchNames(Integer[] ids) {
+        return tagMapper.getTagNamesByIds(ids);
+    }
+
 }
 

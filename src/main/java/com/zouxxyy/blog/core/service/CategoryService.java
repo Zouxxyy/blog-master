@@ -50,4 +50,11 @@ public interface CategoryService {
      */
     List<Category> getAllCategories();
 
+    /**
+     * 根据id，获得分类名，用于日志记录
+     * @param ids
+     * @return
+     */
+    List<String> getBatchNames(Integer[] ids);
+
 }

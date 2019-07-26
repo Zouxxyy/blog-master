@@ -7,11 +7,12 @@ import com.zouxxyy.blog.core.util.PageResult;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class CommetServiceImpl implements CommentService {
+public class CommentServiceImpl implements CommentService {
 
     @Resource
     CommentMapper commentMapper;
@@ -68,5 +69,15 @@ public class CommetServiceImpl implements CommentService {
         comment.setCommentContent(replyBody);
         comment.setCommentCreateTime(new Date());
         return commentMapper.updateByPrimaryKeySelective(comment) > 0;
+    }
+
+    @Override
+    public List<String> getBatchContent(Integer[] ids) {
+
+        List<String> batchContent = new ArrayList<>();
+        for (Integer id : ids) {
+            batchContent.add(commentMapper.getCommentContentByCommentId(id));
+        }
+        return batchContent;
     }
 }

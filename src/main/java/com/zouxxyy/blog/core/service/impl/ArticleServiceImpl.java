@@ -2,11 +2,13 @@ package com.zouxxyy.blog.core.service.impl;
 
 import com.zouxxyy.blog.core.dao.ArticleMapper;
 import com.zouxxyy.blog.core.dao.ArticleTagRefMapper;
+import com.zouxxyy.blog.core.dao.LogMapper;
 import com.zouxxyy.blog.core.dao.TagMapper;
 import com.zouxxyy.blog.core.entity.Article;
 import com.zouxxyy.blog.core.entity.ArticleTagRef;
 import com.zouxxyy.blog.core.entity.Tag;
 import com.zouxxyy.blog.core.service.ArticleService;
+import com.zouxxyy.blog.core.service.LogService;
 import com.zouxxyy.blog.core.util.PageResult;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +21,21 @@ public class ArticleServiceImpl implements ArticleService {
     @Resource
     private ArticleMapper articleMapper;
 
-    @Override
-    public int getArticleCount() {
-        return articleMapper.getArticleCount();
-    }
-
     @Resource
     private TagMapper tagMapper;
 
     @Resource
     private ArticleTagRefMapper articleTagRefMapper;
+
+    @Resource
+    private LogService logService;
+
+
+
+    @Override
+    public int getArticleCount() {
+        return articleMapper.getArticleCount();
+    }
 
     @Override
     public PageResult getArticlePage(Integer page, Integer limit) {
@@ -52,11 +59,11 @@ public class ArticleServiceImpl implements ArticleService {
             return "标签数量限制为6";
         }
 
-        // 文章添加userID
+        // 文章添加userID，暂时不添加，因为只有一个作者
 
         Set<String> deleteTags = new HashSet<>();
         Integer articleId = article.getArticleId();
-        // 旧文章
+        // 跟新旧文章
         if(articleId != null) {
 
             // 根据文章id获得全部的标签名
@@ -70,6 +77,8 @@ public class ArticleServiceImpl implements ArticleService {
                 }
             }
             // 更新文章
+
+
             Article newArticle = articleMapper.selectByPrimaryKey(articleId);
             newArticle.setArticleUpdateTime(new Date());
             newArticle.setArticleTitle(article.getArticleTitle());
@@ -94,6 +103,7 @@ public class ArticleServiceImpl implements ArticleService {
                 Tag tag = new Tag();
                 tag.setTagName(newTag);
                 tagMapper.insertSelective(tag);
+                logService.addLog("添加标签", newTag);
             }
             // 添加关系到关系表
             Tag tag = tagMapper.selectByTagName(newTag);
@@ -123,5 +133,14 @@ public class ArticleServiceImpl implements ArticleService {
             articleTagRefMapper.deleteByArticleID(articleId);
         }
         return true;
+    }
+
+    @Override
+    public List<String> getBatchNames(Integer[] ids) {
+        List<String> batchNames = new ArrayList<>();
+        for (Integer id : ids) {
+            batchNames.add(articleMapper.getArticleTitleByAid(id));
+        }
+        return batchNames;
     }
 }

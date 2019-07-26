@@ -1,5 +1,6 @@
 package com.zouxxyy.blog.core.controller.admin;
 
+import com.zouxxyy.blog.core.service.LogService;
 import com.zouxxyy.blog.core.service.TagService;
 import com.zouxxyy.blog.core.util.PageResult;
 import com.zouxxyy.blog.core.util.Result;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -17,6 +19,9 @@ public class TagController {
 
     @Resource
     private TagService tagService;
+
+    @Resource
+    private LogService logService;
 
     @GetMapping("/tags")
     public String tagPage(HttpServletRequest request) {
@@ -51,6 +56,7 @@ public class TagController {
             return new Result<>(500, "请输入标签名称！", null);
         }
         if (tagService.saveTag(tagName)) {
+            logService.addLog("添加标签", tagName);
             return new Result<>(200, "SUCCESS", null);
         } else {
             return new Result<>(500, "标签名称重复", null);
@@ -68,6 +74,7 @@ public class TagController {
             return new Result<>(500, "请输入标签名称！", null);
         }
         if (tagService.updateTag(tagId, tagName)) {
+            logService.addLog("修改标签", tagName);
             return new Result<>(200, "SUCCESS", null);
         } else {
             return new Result<>(500, "标签名称重复", null);
@@ -83,7 +90,10 @@ public class TagController {
         if (ids.length < 1) {
             return new Result<>(500, "参数异常！", null);
         }
+
+        List<String> logDetails = tagService.getBatchNames(ids);
         if (tagService.deleteBatch(ids)) {
+            logService.addLog("删除标签", String.join("， ", logDetails));
             return new Result<>(200, "SUCCESS", null);
 
         } else {

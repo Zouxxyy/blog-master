@@ -10,7 +10,7 @@ $(function () {
             {label: '回复时间', name: 'commentCreateTime', index: 'commentCreateTime', width: 60},
 
         ],
-        height: 700,
+        height: 560,
         rowNum: 10,
         rowList: [10, 20, 50],
         styleUI: 'Bootstrap',

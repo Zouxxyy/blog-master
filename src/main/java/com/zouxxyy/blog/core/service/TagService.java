@@ -3,6 +3,8 @@ package com.zouxxyy.blog.core.service;
 
 import com.zouxxyy.blog.core.util.PageResult;
 
+import java.util.List;
+
 public interface TagService {
 
     /**
@@ -41,6 +43,13 @@ public interface TagService {
      * @return
      */
     Boolean deleteBatch(Integer[] ids);
+
+    /**
+     * 根据id，获得标签名，用于日志记录
+     * @param ids
+     * @return
+     */
+    List<String> getBatchNames(Integer[] ids);
 
 }
 

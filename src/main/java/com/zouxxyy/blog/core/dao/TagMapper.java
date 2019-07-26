@@ -30,4 +30,6 @@ public interface TagMapper {
     // 根据文章ID得到标签列表
     List<Tag>getTagByAid(Integer aid);
 
+    List<String> getTagNamesByIds(Integer[] ids);
+
 }

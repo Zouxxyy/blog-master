@@ -101,8 +101,18 @@
     select
     <include refid="Base_Column_List"/>
     from log
+    order by time desc
     <if test="start!=null and limit!=null">
       limit #{start}, #{limit}
     </if>
   </select>
+
+  <delete id="deleteLogByIds">
+    delete from log
+    where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
 </mapper>
+

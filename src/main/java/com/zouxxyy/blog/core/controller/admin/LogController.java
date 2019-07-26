@@ -23,6 +23,7 @@ public class LogController {
         return "admin/log";
     }
 
+
     /**
      * 日志列表
      */
@@ -38,5 +39,20 @@ public class LogController {
 
         // 后台返回数据
         return new Result<>(200, "SUCCESS", pageResult);
+    }
+
+    @RequestMapping(value = "/log/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Result delete(@RequestBody Integer[] ids) {
+        if (ids.length < 1) {
+            return new Result<>(500, "参数异常！", null);
+        }
+
+        if (logService.deleteBatch(ids)) {
+            return new Result<>(200, "SUCCESS", null);
+
+        } else {
+            return new Result<>(500, "删除失败", null);
+        }
     }
 }

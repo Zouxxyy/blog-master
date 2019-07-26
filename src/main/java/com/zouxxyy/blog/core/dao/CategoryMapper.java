@@ -29,4 +29,6 @@ public interface CategoryMapper {
 
     int deleteCategoryByIds(Integer[] categoryIds);
 
+    List<String> getCategoryNamesByIds(Integer[] ids);
+
 }

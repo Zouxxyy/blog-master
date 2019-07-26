@@ -124,7 +124,7 @@ function categoryEdit() {
     $("#categoryId").val(id);
 }
 
-function deleteCagegory() {
+function deleteCategory() {
     var ids = getSelectedRows();
     if (ids == null) {
         return;

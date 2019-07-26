@@ -96,5 +96,13 @@
       and article_tag_ref.article_id=#{aid};
   </select>
 
+  <select id="getTagNamesByIds" resultType="java.lang.String">
+    select tag_name
+    from tag
+    where tag_id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
   
 </mapper>

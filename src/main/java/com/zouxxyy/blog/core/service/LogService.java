@@ -11,4 +11,8 @@ public interface LogService {
      * @return
      */
     PageResult getLogPage(Integer page, Integer limit);
+
+    void addLog(String type, String detail);
+
+    Boolean deleteBatch(Integer[] ids);
 }

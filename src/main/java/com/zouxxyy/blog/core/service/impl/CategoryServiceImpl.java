@@ -79,4 +79,9 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.getCategoryByStartAndLimit(null, null);
     }
 
+    @Override
+    public List<String> getBatchNames(Integer[] ids) {
+        return categoryMapper.getCategoryNamesByIds(ids);
+    }
+
 }

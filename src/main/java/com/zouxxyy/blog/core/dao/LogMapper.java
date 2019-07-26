@@ -22,4 +22,7 @@ public interface LogMapper {
     int getLogCount();
 
     List<Log> getLogByStartAndLimit(Integer start, Integer limit);
+
+    int deleteLogByIds(Integer[] tagIds);
+
 }

@@ -4,6 +4,7 @@ import com.zouxxyy.blog.core.entity.Article;
 import com.zouxxyy.blog.core.entity.Tag;
 import com.zouxxyy.blog.core.service.ArticleService;
 import com.zouxxyy.blog.core.service.CategoryService;
+import com.zouxxyy.blog.core.service.LogService;
 import com.zouxxyy.blog.core.util.PageResult;
 import com.zouxxyy.blog.core.util.Result;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ public class ArticleController {
 
     @Resource
     private CategoryService categoryService;
+
+    @Resource
+    private LogService logService;
 
     @GetMapping("/articles")
     public String articlePage(HttpServletRequest request) {
@@ -91,6 +95,7 @@ public class ArticleController {
         article.setArticleStatus(articleStatus);
         article.setArticleEnableComment(articleEnableComment);
 
+        logService.addLog("添加文章", articleTitle);
         String saveBlogResult = articleService.saveArticle(article, articleTags);
 
 
@@ -119,6 +124,7 @@ public class ArticleController {
         article.setArticleStatus(articleStatus);
         article.setArticleEnableComment(articleEnableComment);
 
+        logService.addLog("跟新文章", articleTitle);
         String saveBlogResult = articleService.saveArticle(article, articleTags);
 
         if ("SUCCESS".equals(saveBlogResult)) {
@@ -136,7 +142,11 @@ public class ArticleController {
         if (ids.length < 1) {
             return new Result<>(500, "参数异常！", null);
         }
+
+        List<String> logDetails = articleService.getBatchNames(ids);
+
         if (articleService.deleteBatch(ids)) {
+            logService.addLog("删除文章", String.join("， ", logDetails));
             return new Result<>(200, "SUCCESS", null);
         } else {
             return new Result<>(500, "删除失败！", null);

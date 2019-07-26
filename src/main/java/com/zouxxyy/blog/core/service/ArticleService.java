@@ -3,6 +3,8 @@ package com.zouxxyy.blog.core.service;
 import com.zouxxyy.blog.core.entity.Article;
 import com.zouxxyy.blog.core.util.PageResult;
 
+import java.util.List;
+
 public interface ArticleService {
 
     int getArticleCount();
@@ -14,4 +16,6 @@ public interface ArticleService {
     String saveArticle(Article article, String articleTags);
 
     Boolean deleteBatch(Integer[] ids);
+
+    List<String> getBatchNames(Integer[] ids);
 }

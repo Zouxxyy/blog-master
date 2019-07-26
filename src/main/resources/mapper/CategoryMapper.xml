@@ -91,4 +91,13 @@
     </foreach>
   </delete>
 
+  <select id="getCategoryNamesByIds" resultType="java.lang.String">
+    select category_name
+    from category
+    where category_id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
+
 </mapper>

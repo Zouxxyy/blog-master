@@ -1,6 +1,7 @@
 package com.zouxxyy.blog.core.controller.admin;
 
 import com.zouxxyy.blog.core.service.CommentService;
+import com.zouxxyy.blog.core.service.LogService;
 import com.zouxxyy.blog.core.util.PageResult;
 import com.zouxxyy.blog.core.util.Result;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -17,6 +19,9 @@ public class CommentController {
 
     @Resource
     CommentService commentService;
+
+    @Resource
+    LogService logService;
 
     // 评论管理页面
     @GetMapping("/comments")
@@ -47,13 +52,18 @@ public class CommentController {
         if (ids.length < 1) {
             return new Result<>(500, "参数异常！", null);
         }
+
+        List<String> logDetails = commentService.getBatchContent(ids);
+
         if (commentService.check(ids)) {
+            logService.addLog("审核评论", String.join(", ", logDetails));
             return new Result<>(200, "SUCCESS", null);
         } else {
             return new Result<>(500, "删除失败！", null);
         }
     }
 
+    // 添加回复
     @PostMapping("/comments/reply")
     @ResponseBody
     public Result reply(@RequestParam("commentId") Long commentId,
@@ -62,6 +72,7 @@ public class CommentController {
             return new Result<>(500, "参数异常！", null);
         }
         if (commentService.reply(commentId, replyBody)) {
+            logService.addLog("添加回复", replyBody);
             return new Result<>(200, "SUCCESS", null);
         } else {
             return new Result<>(500, "添加回复失败！", null);
@@ -74,7 +85,9 @@ public class CommentController {
         if (ids.length < 1) {
             return new Result<>(500, "参数异常！", null);
         }
+        List<String> logDetails = commentService.getBatchContent(ids);
         if (commentService.deleteBatch(ids)) {
+            logService.addLog("删除评论或回复", String.join("， ", logDetails));
             return new Result<>(200, "SUCCESS", null);
         } else {
             return new Result<>(500, "删除失败！", null);
@@ -113,6 +126,7 @@ public class CommentController {
             return new Result<>(500, "参数异常！", null);
         }
         if (commentService.updateReply(commentId, replyBody)) {
+            logService.addLog("修改回复", replyBody);
             return new Result<>(200, "SUCCESS", null);
         } else {
             return new Result<>(500, "回复修改失败！", null);

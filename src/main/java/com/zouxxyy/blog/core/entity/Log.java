@@ -16,6 +16,7 @@ public class Log {
 
     private String ip;
 
+
     public Integer getId() {
         return id;
     }

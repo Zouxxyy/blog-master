@@ -128,7 +128,7 @@ function tagEdit() {
     $("#tagId").val(id);
 }
 
-function deleteCagegory() {
+function deleteTag() {
     var ids = getSelectedRows();
     if (ids == null) {
         return;

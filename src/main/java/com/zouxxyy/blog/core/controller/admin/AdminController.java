@@ -30,6 +30,11 @@ public class AdminController {
     @Resource
     private CommentService commentService;
 
+    @Resource
+    private LogService logService;
+
+    public static String LoginIp=""; // logIp
+
     // 登陆界面
     @RequestMapping({"/login"})
     public String login() {
@@ -40,7 +45,8 @@ public class AdminController {
     @PostMapping("/login")
     public String login(@RequestParam("userName") String userName,
                         @RequestParam("password") String passWord,
-                        HttpSession session) {
+                        HttpSession session,
+                        HttpServletRequest httpServletRequest) {
         if(StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
             session.setAttribute("errorMsg", "用户或密码不能为空");
         }
@@ -51,6 +57,9 @@ public class AdminController {
             // 将昵称和id存入session域中，用于登陆拦截器
             session.setAttribute("loginUser", user.getUserNickname());
             session.setAttribute("loginUserId", user.getUserId());
+            // 获取访问IP，用于日志记录
+            LoginIp = httpServletRequest.getRemoteAddr();
+            logService.addLog("登陆", user.getUserNickname() + " 登陆");
             // 登陆成功，进入首页
             return "redirect:/admin/index";
         }
@@ -95,6 +104,7 @@ public class AdminController {
         }
         Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
         if (userService.updateName(loginUserId, userName, userNickName)) {
+            logService.addLog("修改基本信息", "登陆名： " + userName +  " , 昵称： " + userNickName);
             return "success";
         } else {
             return "修改失败";
@@ -111,6 +121,7 @@ public class AdminController {
         }
         Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
         if (userService.updatePassword(loginUserId, originalPassword, newPassword)) {
+            logService.addLog("修改密码", "新密码： " + newPassword);
             //修改成功后清空session中的数据，前端控制跳转至登录页
             request.getSession().removeAttribute("loginUserId");
             request.getSession().removeAttribute("loginUser");
@@ -119,5 +130,14 @@ public class AdminController {
         } else {
             return "密码错误";
         }
+    }
+
+    // 安全退出
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("loginUserId");
+        request.getSession().removeAttribute("loginUser");
+        request.getSession().removeAttribute("errorMsg");
+        return "admin/login";
     }
 }
