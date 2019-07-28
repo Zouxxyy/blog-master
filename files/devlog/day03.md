@@ -51,4 +51,4 @@ return tagMapper.deleteTagByIds(ids) > 0;
 
 设计完后标签界面长这样
 
-![](https://user-gold-cdn.xitu.io/2019/7/25/16c29466dbe1ad8d?w=2704&h=1602&f=png&s=293257)
+![标签](../image/tag.png)

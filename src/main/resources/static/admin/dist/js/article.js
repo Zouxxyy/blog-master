@@ -16,9 +16,9 @@ $(function () {
                 } },
             {label: '浏览量', name: 'articleViewCount', index: 'articleViewCount', width: 50},
             {label: '状态', name: 'articleStatus', index: 'articleStatus', width: 60, formatter: statusFormatter},
-            {label: '添加时间', name: 'articleCreateTime', index: 'articleCreateTime', width: 90}
+            {label: '更新时间', name: 'articleUpdateTime', index: 'articleUpdateTime', width: 90}
         ],
-        height: 700,
+        height: 560,
         rowNum: 10,
         rowList: [10, 20, 50],
         styleUI: 'Bootstrap',

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="header-fragment">
-    <meta charset="utf-8">
+<!--    <meta charset="utf-8">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>my personal blog | 后台管理系统</title>
     <!-- Tell the browser to be responsive to screen width -->
@@ -26,19 +27,19 @@
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a th:href="@{/admin/index}" class="nav-link">Dashboard</a>
+            <a th:href="@{/admin/index}" class="nav-link text-dark">主页</a>
         </li>
     </ul>
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
             <a class="nav-link" th:href="@{/}">
-                <i class="fa fa-paper-plane">&nbsp;&nbsp;博客首页</i>
+                <i class="fa fa-paper-plane text-dark">&nbsp;&nbsp;博客首页</i>
             </a>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="fa fa-user">&nbsp;&nbsp;作者</i>
+                <i class="fa fa-user text-dark">&nbsp;&nbsp;作者</i>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <div class="dropdown-divider"></div>

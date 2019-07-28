@@ -183,6 +183,7 @@
     <include refid="Base_Column_List"/>
     from comment
     where comment_status = 0 or comment_status = 1
+    order by comment_create_time desc
     <if test="start!=null and limit!=null">
       limit #{start}, #{limit}
     </if>
@@ -193,6 +194,7 @@
     <include refid="Base_Column_List"/>
     from comment
     where comment_status = 2
+    order by comment_create_time desc
     <if test="start!=null and limit!=null">
       limit #{start}, #{limit}
     </if>

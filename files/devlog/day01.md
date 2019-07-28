@@ -47,14 +47,15 @@ String passwordMd5 = MD5Util.MD5Encode(password, "UTF-8");
 
 页面包括3个部分：header，sidebar 和 数据显示区域
 
-![](https://user-gold-cdn.xitu.io/2019/7/25/16c28d86744a791d?w=2754&h=1666&f=png&s=344437)
+![首页](../image/index.png)
+
 
 - header 就是顶层的白条
 
 
 - sidebar 可以看到 sidebar 有很多功能，通过它得到想要的功能（主页、博客、评论等等）。
 
-- 数据显示区域就是展示各种功能的地方。其中主页会显示各种东西的统计信息。
+- 数据显示区域就是展示各种功能的地方。其中主页会显示各种东西的统计信息。已经最新的消息
 
 
 

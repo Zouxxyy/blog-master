@@ -91,6 +91,7 @@ public class ArticleServiceImpl implements ArticleService {
         else {
             // 添加新文章
             article.setArticleCreateTime(new Date());
+            article.setArticleUpdateTime(new Date());
             // useGeneratedKeys="true" 表示开启返回自增ID， keyProperty="articleId" 表示返回主键的名字。
             articleMapper.insertSelective(article);
             // articleId之前为空，此处得到增加后的id

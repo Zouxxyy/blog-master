@@ -1,7 +1,9 @@
 package com.zouxxyy.blog.core.controller.admin;
 
+import com.zouxxyy.blog.core.entity.Comment;
 import com.zouxxyy.blog.core.entity.User;
 import com.zouxxyy.blog.core.service.*;
+import com.zouxxyy.blog.core.util.PageResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Controller
@@ -78,6 +81,12 @@ public class AdminController {
         request.setAttribute("articleCount", articleService.getArticleCount());
         request.setAttribute("tagCount", tagService.getTagCount());
         request.setAttribute("commentCount", commentService.getCommentCount());
+
+        PageResult commentPageResult = commentService.getCommentPage(1, 10);
+        request.setAttribute("commentList", commentPageResult.getList());
+
+        PageResult articlePageResult = articleService.getArticlePage(1, 10);
+        request.setAttribute("articleList", articlePageResult.getList());
 
         return "admin/index";
 

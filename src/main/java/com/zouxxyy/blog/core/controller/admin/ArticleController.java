@@ -124,7 +124,7 @@ public class ArticleController {
         article.setArticleStatus(articleStatus);
         article.setArticleEnableComment(articleEnableComment);
 
-        logService.addLog("跟新文章", articleTitle);
+        logService.addLog("更新文章", articleTitle);
         String saveBlogResult = articleService.saveArticle(article, articleTags);
 
         if ("SUCCESS".equals(saveBlogResult)) {

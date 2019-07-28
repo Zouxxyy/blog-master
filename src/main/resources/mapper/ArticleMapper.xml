@@ -229,6 +229,7 @@
     select
     <include refid="Base_Column_List"/>
     from article
+    order by article_update_time desc
     <if test="start!=null and limit!=null">
       limit #{start}, #{limit}
     </if>

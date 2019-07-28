@@ -188,9 +188,8 @@ articleTagRefMapper.deleteByArticleID(articleId);
 
 这个md输入框感觉很高大上，不过我们不用关心怎么实现的，我们只需要把它看成一个大点的表单就ok
 
-![](https://user-gold-cdn.xitu.io/2019/7/26/16c2c00aea91a71f?w=2952&h=1770&f=png&s=246042)
-
+![编辑](../image/edit.png)
 
 - 文章列表界面
 
-![](https://user-gold-cdn.xitu.io/2019/7/26/16c2c0126693ae8e?w=2956&h=1764&f=png&s=27586)
+![文章](../image/blog.png)

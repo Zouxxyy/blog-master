@@ -1,4 +1,4 @@
-# 第4天
+# 第5天
 
 接下来是评论功能
 
@@ -97,8 +97,8 @@
 
 - 评论列表界面
 
-![](https://user-gold-cdn.xitu.io/2019/7/26/16c2c139cd06798d?w=2928&h=1770&f=png&s=252437)
+![评论](../image/comment.png)
 
 - 回复列表界面
 
-![](https://user-gold-cdn.xitu.io/2019/7/26/16c2c143789d0303?w=3026&h=1762&f=png&s=291239)
+![回复](../image/reply.png)

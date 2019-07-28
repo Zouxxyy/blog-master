@@ -87,7 +87,7 @@ if(count > 0)
 
 全部功能设计完后，长这样，是有点寒酸，不过我们想要的功能都有：
 
-![](https://user-gold-cdn.xitu.io/2019/7/25/16c290cceac6006f?w=2710&h=1670&f=png&s=201814)
+![分类](../image/category.png)
 
 
 

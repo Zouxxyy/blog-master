@@ -4,6 +4,7 @@ server:
 spring:
   thymeleaf:
     cache: false
+    encoding: UTF-8
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
